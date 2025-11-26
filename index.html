@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nmap Port Scanner</title>
+    <style>
+        body { font-family: Arial; padding: 30px; }
+        input { padding: 8px; width: 300px; }
+        button { padding: 8px 15px; cursor: pointer; }
+        pre { background: #eee; padding: 20px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<h2>Nmap Port Scanner</h2>
+
+<input id="target" placeholder="Enter IP or Domain">
+<button onclick="scan()">Scan</button>
+
+<pre id="result"></pre>
+
+<script>
+function scan() {
+    const target = document.getElementById("target").value;
+
+    fetch("/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ target })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            document.getElementById("result").textContent = "Error: " + data.error;
+        } else {
+            document.getElementById("result").textContent = data.output;
+        }
+    });
+}
+</script>
+
+</body>
+</html>
